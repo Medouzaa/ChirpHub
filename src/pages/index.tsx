@@ -6,6 +6,11 @@ import { Loading } from "~/components/loading";
 
 import { type RouterOutputs, api } from "~/utils/api";
 
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
+
 function CreatePost() {
   const [content, setContent] = useState("");
 
@@ -63,7 +68,8 @@ function PostView(props: PostWithAuthor) {
       />
       <div className="flex flex-col">
         <div className="text-sm font-semibold text-slate-300">
-          <span>{`@${author.firstName}`}</span> · <span>1 hour ago</span>
+          <span>{`@${author.firstName}`}</span> ·{" "}
+          <span className="font-thin">{dayjs(post.createdAt).fromNow()}</span>
         </div>
         <span className="text-lg">{post.content}</span>
       </div>
