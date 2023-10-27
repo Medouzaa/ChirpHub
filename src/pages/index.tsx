@@ -8,7 +8,16 @@ import { type RouterOutputs, api } from "~/utils/api";
 
 function CreatePost() {
   const [content, setContent] = useState("");
-  const { mutate } = api.posts.create.useMutation();
+
+  const ctx = api.useContext();
+
+  const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
+    onSuccess: () => {
+      setContent("");
+      void ctx.posts.getAll.invalidate();
+    },
+  });
+
   const { user } = useUser();
 
   if (!user) return <div>Something went wrong!</div>;
@@ -28,14 +37,9 @@ function CreatePost() {
         placeholder="What is happening?!"
         className="w-full bg-transparent outline-none"
         onChange={(e) => setContent(e.target.value)}
+        value={content}
       />
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          mutate({ content, authorId: user.id });
-          setContent("");
-        }}
-      >
+      <button onClick={() => mutate({ content })} disabled={isPosting}>
         Post
       </button>
     </>
@@ -100,7 +104,6 @@ export default function Home() {
         </div>
         <Feed />
       </div>
-      <SignOutButton />
     </>
   );
 }
