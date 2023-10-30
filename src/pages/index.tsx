@@ -2,7 +2,7 @@ import { SignInButton, useUser } from "@clerk/nextjs";
 import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
-import { Loading } from "~/components/loading";
+import { Loading, LoadingSpinner } from "~/components/loading";
 
 import { type RouterOutputs, api } from "~/utils/api";
 
@@ -12,13 +12,13 @@ import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
 function CreatePost() {
-  const [content, setContent] = useState("");
+  const [input, setInput] = useState("");
 
   const ctx = api.useContext();
 
   const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
     onSuccess: () => {
-      setContent("");
+      setInput("");
       void ctx.posts.getAll.invalidate();
     },
   });
@@ -41,12 +41,24 @@ function CreatePost() {
         type="text"
         placeholder="What is happening?!"
         className="w-full bg-transparent outline-none"
-        onChange={(e) => setContent(e.target.value)}
-        value={content}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            console.log("Enter clicked");
+            e.preventDefault();
+            if (input !== "") {
+              mutate({ content: input });
+            }
+          }
+        }}
+        value={input}
       />
-      <button onClick={() => mutate({ content })} disabled={isPosting}>
-        Post
-      </button>
+      {input !== "" && !isPosting && (
+        <button onClick={() => mutate({ content: input })} disabled={isPosting}>
+          Post
+        </button>
+      )}
+      {isPosting && <LoadingSpinner size={20} />}
     </>
   );
 }

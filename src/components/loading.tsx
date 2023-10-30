@@ -1,4 +1,4 @@
-function LoadingSpinner(props: { size?: number }) {
+export function LoadingSpinner(props: { size?: number }) {
   return (
     <div role="status">
       <svg
