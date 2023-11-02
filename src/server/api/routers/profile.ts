@@ -1,4 +1,8 @@
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  privateProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 import z from "zod";
 import { clerkClient } from "@clerk/nextjs";
 import { TRPCError } from "@trpc/server";
@@ -21,4 +25,19 @@ export const profileRouter = createTRPCRouter({
 
       return filterUserForClient(user);
     }),
+
+  getPostsByAuthor: privateProcedure.query(async ({ ctx }) => {
+    const authorId = ctx.userId;
+
+    const posts = await ctx.db.post.findMany({
+      where: {
+        authorId,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return posts;
+  }),
 });
