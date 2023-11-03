@@ -1,5 +1,4 @@
 import { SignInButton, useUser } from "@clerk/nextjs";
-import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
 import { Loading, LoadingSpinner } from "~/components/loading";
@@ -8,6 +7,7 @@ import { type RouterOutputs, api } from "~/utils/api";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { Layout } from "~/components/layout";
 
 dayjs.extend(relativeTime);
 
@@ -31,7 +31,7 @@ function CreatePost() {
     <>
       <Image
         src={user.imageUrl}
-        alt={`${user.fullName}'s profile picture`}
+        alt={`${user.username}'s profile picture`}
         className="rounded-full"
         width={56}
         height={56}
@@ -72,7 +72,7 @@ function PostView(props: PostWithAuthor) {
     <div className="flex items-center gap-3 border-b p-4">
       <Image
         src={author.imageUrl}
-        alt={`${author.firstName}'s profile picture`}
+        alt={`${author.username}'s profile picture`}
         className="rounded-full"
         width={56}
         height={56}
@@ -80,7 +80,7 @@ function PostView(props: PostWithAuthor) {
       />
       <div className="flex flex-col">
         <div className="text-sm font-semibold text-slate-300">
-          <span>{`@${author.firstName}`}</span> ·{" "}
+          <span>{`@${author.username}`}</span> ·{" "}
           <span className="font-thin">{dayjs(post.createdAt).fromNow()}</span>
         </div>
         <span className="text-lg">{post.content}</span>
@@ -109,19 +109,12 @@ export default function Home() {
   const { isSignedIn } = useUser();
 
   return (
-    <>
-      <Head>
-        <title>chirp hub</title>
-        <meta name="description" content="chirp hub home page" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <div className="mx-auto min-h-screen border-x border-slate-400 md:max-w-2xl">
-        <div className="flex items-center gap-3 border-b p-4">
-          {isSignedIn && <CreatePost />}
-          {!isSignedIn && <SignInButton />}
-        </div>
-        <Feed />
+    <Layout>
+      <div className="flex items-center gap-3 border-b p-4">
+        {isSignedIn && <CreatePost />}
+        {!isSignedIn && <SignInButton />}
       </div>
-    </>
+      <Feed />
+    </Layout>
   );
 }
