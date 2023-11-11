@@ -2,14 +2,10 @@ import { SignInButton, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { useState } from "react";
 import { Loading, LoadingSpinner } from "~/components/loading";
+import { api } from "~/utils/api";
 
-import { type RouterOutputs, api } from "~/utils/api";
-
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import { Layout } from "~/components/layout";
-
-dayjs.extend(relativeTime);
+import { PostView } from "~/components/post-view";
 
 function CreatePost() {
   const [input, setInput] = useState("");
@@ -60,32 +56,6 @@ function CreatePost() {
       )}
       {isPosting && <LoadingSpinner size={20} />}
     </>
-  );
-}
-
-type PostWithAuthor = RouterOutputs["posts"]["getAll"][number];
-
-function PostView(props: PostWithAuthor) {
-  const { post, author } = props;
-
-  return (
-    <div className="flex items-center gap-3 border-b p-4">
-      <Image
-        src={author.imageUrl}
-        alt={`${author.username}'s profile picture`}
-        className="rounded-full"
-        width={56}
-        height={56}
-        priority={true}
-      />
-      <div className="flex flex-col">
-        <div className="text-sm font-semibold text-slate-300">
-          <span>{`@${author.username}`}</span> ·{" "}
-          <span className="font-thin">{dayjs(post.createdAt).fromNow()}</span>
-        </div>
-        <span className="text-lg">{post.content}</span>
-      </div>
-    </div>
   );
 }
 
