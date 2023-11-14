@@ -70,4 +70,22 @@ export const postsRouter = createTRPCRouter({
       };
     });
   }),
+
+  getPostById: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ ctx, input }) => {
+      const post = await ctx.db.post.findUnique({ where: { id: input.id } });
+      if (!post) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Post not found",
+        });
+      }
+      const userId = post.authorId;
+      const author = filterUserForClient(
+        await clerkClient.users.getUser(userId),
+      );
+
+      return { post, author };
+    }),
 });
