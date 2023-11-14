@@ -29,8 +29,8 @@ function CreatePost() {
         src={user.imageUrl}
         alt={`${user.username}'s profile picture`}
         className="rounded-full"
-        width={56}
-        height={56}
+        width={48}
+        height={48}
         priority={true}
       />
       <input
@@ -40,7 +40,6 @@ function CreatePost() {
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            console.log("Enter clicked");
             e.preventDefault();
             if (input !== "") {
               mutate({ content: input });

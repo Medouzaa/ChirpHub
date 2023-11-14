@@ -13,13 +13,13 @@ export function PostView(props: PostWithAuthor) {
   const { post, author } = props;
 
   return (
-    <div className="flex items-center gap-3 border-b p-4">
+    <div className="flex items-start gap-3 border-b p-4">
       <Image
         src={author.imageUrl}
         alt={`${author.username}'s profile picture`}
         className="rounded-full"
-        width={56}
-        height={56}
+        width={48}
+        height={48}
         priority={true}
       />
       <div className="flex flex-col">
@@ -29,7 +29,10 @@ export function PostView(props: PostWithAuthor) {
           </Link>{" "}
           · <span className="font-thin">{dayjs(post.createdAt).fromNow()}</span>
         </div>
-        <span className="text-lg">{post.content}</span>
+        <Link href={`/post/${post.id.toString()}`}>
+          <span className="text-lg">{post.content}</span>
+        </Link>
+        <div>Like</div>
       </div>
     </div>
   );
