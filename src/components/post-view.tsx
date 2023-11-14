@@ -25,12 +25,12 @@ export function PostView(props: PostWithAuthor) {
       <div className="flex flex-col">
         <div className="text-sm font-semibold text-slate-300">
           <Link href={`/${author.username}`}>
-            <span>{`@${author.username}`}</span>
+            <span className="text-base font-bold">{author.username}</span>
           </Link>{" "}
-          · <span className="font-thin">{dayjs(post.createdAt).fromNow()}</span>
+          <span className="font-thin">· {dayjs(post.createdAt).fromNow()}</span>
         </div>
         <Link href={`/post/${post.id.toString()}`}>
-          <span className="text-lg">{post.content}</span>
+          <span className="tracking-tighter">{post.content}</span>
         </Link>
         <div>Like</div>
       </div>
