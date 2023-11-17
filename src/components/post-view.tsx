@@ -1,4 +1,4 @@
-import { type RouterOutputs } from "~/utils/api";
+import { api, type RouterOutputs } from "~/utils/api";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -46,11 +46,6 @@ export function PostView(props: PostWithAuthor) {
         <Link href={`/post/${post.id.toString()}`}>
           <span className="tracking-tighter">{post.content}</span>
         </Link>
-        <div className="h-2" />
-        <div className="flex items-center gap-1">
-          <HeartIcon />
-          <span className="text-sm text-slate-300">12</span>
-        </div>
       </div>
     </div>
   );

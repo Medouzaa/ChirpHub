@@ -3,7 +3,11 @@
 import { authMiddleware } from "@clerk/nextjs";
 
 export default authMiddleware({
-  publicRoutes: ["/"],
+  publicRoutes: [
+    "/",
+    "/api/trpc/posts.getAll",
+    "/api/trpc/likes.getLikesByPostId",
+  ],
 });
 
 export const config = {

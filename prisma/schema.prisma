@@ -19,3 +19,13 @@ model Post {
 
     @@index([authorId])
 }
+
+model Like {
+    id        Int      @id @default(autoincrement())
+    userId    String
+    postId    Int
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([userId, postId])
+}

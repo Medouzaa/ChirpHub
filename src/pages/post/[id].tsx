@@ -11,7 +11,6 @@ export default function PostPage() {
   const { data: postWithAuthor, isLoading } = api.posts.getPostById.useQuery({
     id: Number(postId),
   });
-  console.log("post", postWithAuthor);
 
   if (isLoading) return <Loading />;
 
